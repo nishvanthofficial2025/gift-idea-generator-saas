@@ -1,290 +1,211 @@
 :root {
-    --bg-color: #121212;
-    --app-window-bg: #1C1C1E;
-    --text-primary: #f5f5f7;
-    --text-secondary: #8e8e93;
-    --brand-lime: #bfff00;
-    --border-color: #38383a;
+    --bg-color: #161616;
+    --app-window-bg: #1c1c1e;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --brand-green: #c4ff4d;
+    --brand-green-dark: #84a242;
+    --brand-green-glow: rgba(196, 255, 77, 0.2);
+    --border-color: #333333;
+    --input-bg: #222224;
 }
+
+* { box-sizing: border-box; }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-primary);
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 2rem;
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .app-window {
     width: 100%;
     max-width: 1100px;
-    height: 85vh; /* Slightly increased height */
-    max-height: 750px;
+    height: 900px; 
     background-color: var(--app-window-bg);
     border-radius: 24px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
     padding: 1.5rem 2.5rem;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     position: relative;
+    overflow: hidden;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    flex-shrink: 0;
-    z-index: 3;
-}
-
-/* ... other header/nav styles are fine ... */
+header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 2; }
 .logo { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); text-decoration: none; }
-nav a { color: var(--text-secondary); text-decoration: none; margin-left: 2rem; font-weight: 600; transition: color 0.3s ease; }
-nav a:hover { color: var(--text-primary); }
-.nav-button { background-color: rgba(255, 255, 255, 0.1); padding: 0.6rem 1.2rem; border-radius: 99px; border: 1px solid var(--border-color); }
-.nav-button:hover { background-color: rgba(255, 255, 255, 0.15); color: var(--text-primary); }
+nav a { color: var(--text-secondary); text-decoration: none; margin-left: 2rem; font-weight: 500; transition: color 0.3s ease; }
+.nav-button { background-color: var(--input-bg); padding: 0.6rem 1.2rem; border-radius: 8px; border: 1px solid var(--border-color); text-decoration: none; font-weight: 500;}
 
+main { flex-grow: 1; position: relative; z-index: 1; }
+.hero-content { display: flex; flex-direction: column; align-items: center; text-align: center; height: 100%; }
 
-/* ✅ FIX: Main Layout Correction */
-main.hero-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
-    overflow-y: auto;
-    padding: 1rem; /* Simplified padding */
+.hero-content::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 800px; height: 600px;
+    background: radial-gradient(circle, var(--brand-green-glow), transparent 60%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    filter: blur(80px);
 }
-
-.hero-text {
-    text-align: center;
-    flex-shrink: 0; /* Prevents this part from shrinking */
-    padding: 1rem 0;
+.hero-text { padding: 2rem 0; flex-shrink: 0; }
+h1 { font-size: 3.5rem; line-height: 1.1; font-weight: 700; margin: 0; letter-spacing: -1.5px; }
+.highlight { position: relative; color: var(--brand-green); }
+.highlight::after {
+    content: '';
+    position: absolute;
+    left: -5%; bottom: -10px;
+    width: 110%;
+    height: 10px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="10" viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg"><path d="M0 5 C 20 0, 40 10, 60 5 S 80 0, 100 5" stroke="%23c4ff4d" stroke-width="2" fill="none" /></svg>');
+    background-repeat: no-repeat;
+    background-size: contain;
 }
+.hero-text p { color: var(--text-secondary); font-size: 1.1rem; max-width: 550px; margin: 1rem auto; }
+#prompt-form { width: 100%; max-width: 700px; }
 
-main h1 {
-    font-size: 3.5rem;
-    line-height: 1.1;
-    font-weight: 700;
-    margin: 0;
-    max-width: 700px;
-    background: linear-gradient(to right, #ffffff, #d3d3d3);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-main p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 1.5rem 0 2.5rem;
-}
-
-#prompt-form {
+.form-group.full-width { grid-column: 1 / -1; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1rem; }
+.form-group { text-align: left; margin-bottom: 0.75rem; }
+.form-group label { display: block; font-weight: 500; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+#prompt-form input[type="text"], #prompt-form select, #prompt-form textarea {
     width: 100%;
-    max-width: 650px;
-    padding-bottom: 2rem; /* Add padding at the bottom of the form */
-}
-
-/* --- Form Grid Styles --- */
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    width: 100%;
-    margin: 0 auto 1.5rem;
-}
-
-.form-group {
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
-}
-
-#prompt-form input[type="text"],
-#prompt-form select,
-#prompt-form textarea {
-    width: 100%;
-    background-color: #2c2c2e;
+    background-color: var(--input-bg);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
-    padding: 0.8rem 1rem;
-    border-radius: 10px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-}
-
-#prompt-form textarea {
-    min-height: 70px;
-    resize: vertical;
-}
-
-#prompt-form input[type="text"]:focus,
-#prompt-form select:focus,
-#prompt-form textarea:focus {
-    outline: none;
-    border-color: var(--brand-lime);
-    box-shadow: 0 0 15px rgba(191, 255, 0, 0.2);
-}
-
-#prompt-form .form-group + .form-group {
-    margin-top: 1.5rem;
-}
-
-#prompt-form button {
-    background-color: var(--brand-lime);
-    color: #000;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(191, 255, 0, 0.2);
-}
-#prompt-form button:hover {
-    background-color: #fff;
-    transform: scale(1.03);
-    box-shadow: 0 0 30px rgba(191, 255, 0, 0.4);
-}
-
-/* ✅ NEW: Budget Slider Styles */
-.slider-container {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-#budget-value {
-    background-color: #2c2c2e;
-    border: 1px solid var(--border-color);
-    padding: 0.8rem 0;
-    border-radius: 10px;
-    font-size: 1rem;
-    flex-shrink: 0;
-    width: 120px; /* Give it a fixed width */
-    text-align: center;
-}
-
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 8px;
-    background: var(--border-color);
-    border-radius: 5px;
-    outline: none;
-    transition: opacity 0.2s;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--brand-lime);
-    cursor: pointer;
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgba(191, 255, 0, 0.5);
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--brand-lime);
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    box-shadow: 0 0 5px rgba(191, 255, 0, 0.5);
-}
-
-/* ... other styles are fine ... */
-.hero-glow { position: absolute; top: 50%; left: 50%; width: 800px; height: 800px; background: radial-gradient(circle, rgba(191, 255, 0, 0.1), transparent 60%); transform: translate(-50%, -50%); z-index: 0; filter: blur(50px); }
-.deco-shape { position: absolute; background: var(--brand-lime); border-radius: 50%; filter: blur(60px); z-index: 0; opacity: 0.15; }
-.shape-1 { width: 200px; height: 200px; top: 10%; left: 15%; }
-.shape-2 { width: 150px; height: 150px; bottom: 5%; right: 10%; }
-main.hero-content::-webkit-scrollbar { width: 8px; }
-main.hero-content::-webkit-scrollbar-track { background: transparent; }
-main.hero-content::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; border: 2px solid var(--app-window-bg); }
-main.hero-content::-webkit-scrollbar-thumb:hover { background-color: var(--text-secondary); }
-
-/* --- ADD THESE NEW STYLES TO YOUR EXISTING style.css FILE --- */
-
-.hidden {
-    display: none;
-}
-
-.avoid-section {
-    width: 100%;
-    max-width: 650px;
-    margin: 1.5rem auto 0;
-    text-align: left;
-}
-
-#add-exclusions-btn {
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-decoration: none;
-    border: 1px dashed var(--border-color);
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     border-radius: 8px;
-    transition: all 0.3s ease;
-    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+#prompt-form textarea { min-height: 80px; resize: none; }
+#prompt-form input[type="text"]:focus, #prompt-form select:focus, #prompt-form textarea:focus {
+    outline: none;
+    border-color: var(--brand-green);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2), 0 0 10px var(--brand-green-glow);
+}
+#prompt-form select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.7rem top 50%;
+    background-size: 1.5rem;
+    padding-right: 2.5rem;
+}
+.cta-button { border: none; background: var(--brand-green); color: #000; font-weight: 600; padding: 0.8rem 1.5rem; border-radius: 8px; margin-top: 1rem; cursor: pointer; font-size: 1rem; transition: all 0.2s ease; }
+.cta-button:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.slider-wrapper { position: relative; padding-top: 2rem; }
+.slider-value { position: absolute; top: -5px; background-color: var(--brand-green); color: #000; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.9rem; font-weight: 600; white-space: nowrap; transform: translateX(-50%); transition: opacity 0.2s ease; }
+.slider-value::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid var(--brand-green); }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: var(--input-bg); border-radius: 5px; border: 1px solid var(--border-color); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--brand-green); border: 3px solid #fff; cursor: pointer; border-radius: 50%; margin-top: -7px; box-shadow: 0 0 10px var(--brand-green-glow); }
+
+.hidden { display: none; }
+.avoid-section { grid-column: 1 / -1; margin-top: 0.5rem; text-align: left; }
+#add-exclusions-btn { color: var(--text-secondary); font-weight: 500; text-decoration: none; border: 1px dashed var(--border-color); padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s ease; display: inline-block; font-size: 0.85rem; }
+.tag { background-color: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 0.3rem 0.8rem; border-radius: 99px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; }
+
+/* Styles for Results Page */
+.results-page-content { padding: 1rem 0; height: 100%; overflow-y: auto; }
+.results-page-content::-webkit-scrollbar { width: 8px; }
+.results-page-content::-webkit-scrollbar-track { background: transparent; }
+.results-page-content::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
+.results-header { font-size: 2rem; margin-bottom: 2rem; }
+#results-container { display: flex; flex-direction: column; gap: 2.5rem; padding-bottom: 2rem; }
+.result-item-wrapper { display: grid; grid-template-columns: 2fr 1.2fr; gap: 1.5rem; align-items: start; }
+.product-card { background: #eef0f2; color: #111; border: 1px solid #d0d7de; border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; }
+.product-image-placeholder { width: 100%; aspect-ratio: 16 / 9; background-color: #d0d7de; border-radius: 10px; margin-bottom: 1.5rem; }
+.product-info h3 { margin: 0 0 0.5rem 0; font-size: 1.75rem; color: #111; }
+.experience-panel { display: flex; flex-direction: column; gap: 1rem; }
+.experience-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; }
+.experience-item strong { display: block; margin-bottom: 0.3rem; color: var(--text-primary); }
+.loader-container, .error-card { text-align: center; padding: 4rem 0; color: var(--text-secondary); }
+.loader { border: 4px solid var(--border-color); border-top: 4px solid var(--brand-green); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+
+/* ========================================================= */
+/* ✅ NEW: RESPONSIVE DESIGN - MEDIA QUERIES */
+/* ========================================================= */
+
+/* --- Tablet and Smaller Desktops --- */
+@media (max-width: 900px) {
+    body {
+        padding: 1rem;
+    }
+    .app-window {
+        height: auto; /* Allow height to adjust to content */
+        max-height: 95vh; /* Prevent it from taking over the whole screen */
+        padding: 1.5rem;
+        overflow: hidden; /* App window itself doesn't scroll */
+    }
+    main {
+        overflow-y: auto; /* The content inside scrolls instead */
+    }
+    h1 {
+        font-size: 2.8rem;
+    }
+    .form-grid {
+        grid-template-columns: 1fr; /* Stack form elements */
+    }
+    .result-item-wrapper {
+        grid-template-columns: 1fr; /* Stack results */
+    }
+    .experience-panel {
+        width: 100%; /* Take full width when stacked */
+    }
 }
 
-#add-exclusions-btn:hover {
-    color: var(--text-primary);
-    border-color: var(--text-secondary);
-}
 
-#avoid-details {
-    margin-top: 1.5rem;
-}
-
-.suggested-tags {
-    margin-top: 0.75rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.tag {
-    background-color: #2c2c2e;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 0.3rem 0.8rem;
-    border-radius: 99px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.tag:hover {
-    border-color: var(--brand-lime);
-    color: var(--brand-lime);
-}
-
-.tag.added {
-    background-color: var(--brand-lime);
-    color: #000;
-    border-color: var(--brand-lime);
-    cursor: default;
-    opacity: 0.7;
+/* --- Mobile Phones --- */
+@media (max-width: 600px) {
+    body {
+        padding: 0.5rem;
+    }
+    .app-window {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+    header nav a {
+        display: none; /* Hide nav links on mobile */
+    }
+    header nav .nav-button {
+        display: block; /* Ensure the button is still visible */
+    }
+    h1 {
+        font-size: 2.2rem;
+        letter-spacing: -1px;
+    }
+    .hero-text {
+        padding: 1rem 0;
+    }
+    .hero-text p {
+        font-size: 1rem;
+    }
+    .cta-button {
+        width: 100%;
+        padding: 1rem;
+    }
+    #prompt-form input, #prompt-form select, #prompt-form textarea {
+        font-size: 1rem;
+    }
+    .results-header {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .product-info h3 {
+        font-size: 1.4rem;
+    }
 }
